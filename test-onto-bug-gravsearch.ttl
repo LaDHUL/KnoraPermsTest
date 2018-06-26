@@ -1,0 +1,72 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix knora-base: <http://www.knora.org/ontology/knora-base#> .
+@prefix salsah-gui: <http://www.knora.org/ontology/salsah-gui#> .
+@prefix test: <http://www.knora.org/ontology/0666/test#> .
+@base <http://www.knora.org/ontology/0666/test> .
+
+<http://www.knora.org/ontology/0666/test> a owl:Ontology ;
+    rdfs:label "Test ontology" ;
+    knora-base:attachedToProject <http://rdfh.ch/projects/0666> .
+
+test:isInProjectValue rdf:type owl:ObjectProperty ;
+  rdfs:subPropertyOf knora-base:hasLinkToValue ;
+  knora-base:objectClassConstraint knora-base:LinkValue ;
+  rdfs:label """isInProjectValue"""@en .
+
+test:isInProject rdf:type owl:ObjectProperty ;
+     rdfs:subPropertyOf knora-base:hasLinkTo ;
+     rdfs:label """isInProject"""@en ;
+     knora-base:objectClassConstraint test:Project ;
+     salsah-gui:guiElement salsah-gui:Searchbox .
+
+test:Draft rdf:type owl:Class ;
+  rdfs:subClassOf knora-base:Resource ;
+  rdfs:label """Draft"""@en .
+
+test:Project rdf:type owl:Class ;
+  rdfs:subClassOf knora-base:Resource ;
+  rdfs:label """Project"""@en .
+
+test:Person rdf:type owl:Class ;
+    rdfs:subClassOf knora-base:Resource ,
+    [
+    rdf:type owl:Restriction ;
+    owl:onProperty test:isInProjectValue ;
+    owl:minCardinality "0"^^xsd:nonNegativeInteger ] ,
+    [
+    rdf:type owl:Restriction ;
+    owl:onProperty test:isInProject ;
+    owl:minCardinality "0"^^xsd:nonNegativeInteger ] ;
+    rdfs:label """Person"""@en .
+
+test:DraftPerson rdf:type owl:Class ;
+               rdfs:subClassOf test:Draft , test:Person;
+               rdfs:label """DraftPerson"""@en .
+
+test:BibliographicNotice rdf:type owl:Class ;
+    rdfs:subClassOf knora-base:Resource ,
+    [
+    rdf:type owl:Restriction ;
+    owl:onProperty test:isInProjectValue ;
+    owl:minCardinality "0"^^xsd:nonNegativeInteger ] ,
+    [
+    rdf:type owl:Restriction ;
+    owl:onProperty test:isInProject ;
+    owl:minCardinality "0"^^xsd:nonNegativeInteger ]  ;
+        rdfs:label """BibliographicNotice"""@en .
+
+test:Relation rdf:type owl:Class ;
+    rdfs:subClassOf knora-base:Resource ,
+    [
+    rdf:type owl:Restriction ;
+    owl:onProperty test:isInProjectValue ;
+    owl:minCardinality "0"^^xsd:nonNegativeInteger ] ,
+    [
+    rdf:type owl:Restriction ;
+    owl:onProperty test:isInProject ;
+    owl:minCardinality "0"^^xsd:nonNegativeInteger ]  ;
+        rdfs:label """Relation"""@en .

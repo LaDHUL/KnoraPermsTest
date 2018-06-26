@@ -1,0 +1,54 @@
+<xs:schema 
+vc:minVersion="1.0" targetNamespace="http://api.knora.org/ontology/0666/test/xml-import/v1#" elementFormDefault="qualified" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:knoraXmlImport="http://api.knora.org/ontology/knoraXmlImport/v1#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://api.knora.org/ontology/0666/test/xml-import/v1#">
+    <xs:import schemaLocation="knoraXmlImport.xsd" namespace="http://api.knora.org/ontology/knoraXmlImport/v1#"/>
+    <xs:element name="Draft">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="knoraXmlImport:resourceType">
+                    <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="1" ref="knoraXmlImport:label"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="Draft_linkValueType">
+        <xs:sequence>
+            <xs:element type="knoraXmlImport:linkValueType" name="Draft"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="DraftPerson">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="knoraXmlImport:resourceType">
+                    <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="1" ref="knoraXmlImport:label"/>
+                        <xs:element type="knoraXmlImport:richtextValueType" maxOccurs="1" minOccurs="1" name="hasName"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="DraftPerson_linkValueType">
+        <xs:sequence>
+            <xs:element type="knoraXmlImport:linkValueType" name="DraftPerson"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="Person">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="knoraXmlImport:resourceType">
+                    <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="1" ref="knoraXmlImport:label"/>
+                        <xs:element type="knoraXmlImport:richtextValueType" maxOccurs="1" minOccurs="1" name="hasName"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="Person_linkValueType">
+        <xs:sequence>
+            <xs:element type="knoraXmlImport:linkValueType" name="Person"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

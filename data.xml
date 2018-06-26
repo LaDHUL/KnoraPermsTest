@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knoraXmlImport:resources xmlns="http://api.knora.org/ontology/0666/test/xml-import/v1#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://api.knora.org/ontology/0666/test/xml-import/v1# p0666-test.xsd"
+    xmlns:p0666-test="http://api.knora.org/ontology/0666/test/xml-import/v1#"
+    xmlns:knoraXmlImport="http://api.knora.org/ontology/knoraXmlImport/v1#">
+    
+    <Person id="person1">
+        <knoraXmlImport:label>person1</knoraXmlImport:label>
+        <hasName knoraType="richtext_value">person1 name</hasName>
+    </Person>
+<!--    <DraftPerson id="draftperson1">
+        <knoraXmlImport:label>draftperson1</knoraXmlImport:label>
+        <hasName knoraType="richtext_value">draftperson1 name</hasName>
+    </DraftPerson>
+-->    
+</knoraXmlImport:resources>

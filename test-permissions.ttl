@@ -1,0 +1,46 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix knora-base: <http://www.knora.org/ontology/knora-base#> .
+@prefix salsah-gui: <http://www.knora.org/ontology/salsah-gui#> .
+@prefix test: <http://www.knora.org/ontology/0666/test#> .
+
+
+<http://rdfh.ch/permissions/0666/admin-perms-of-admin-group> rdf:type knora-base:AdministrativePermission ;
+                      knora-base:forProject <http://rdfh.ch/projects/0666> ;
+                      # for admin users
+                      knora-base:forGroup knora-base:ProjectAdmin ;
+                      # proj admin + res creation
+                      knora-base:hasPermissions "ProjectAdminAllPermission|ProjectResourceCreateAllPermission"^^xsd:string .
+
+<http://rdfh.ch/permissions/0666/admin-perms-of-member-group> rdf:type knora-base:AdministrativePermission ;
+                      knora-base:forProject <http://rdfh.ch/projects/0666> ;
+                      # for project member users
+                      knora-base:forGroup knora-base:ProjectMember ;
+                      # res creation 
+                      knora-base:hasPermissions "ProjectResourceCreateAllPermission"^^xsd:string .
+
+<http://rdfh.ch/permissions/0666/default-object-perms> rdf:type knora-base:DefaultObjectAccessPermission ;
+  knora-base:forProject <http://rdfh.ch/projects/0666> ;
+  knora-base:forGroup knora-base:ProjectMember ;
+  # only ProjectMember can create res (see above) -> new objects will have by default following perms:
+  # - visible by all
+  # - modif by member
+  # - full perms for admin
+  knora-base:hasPermissions "CR knora-base:ProjectAdmin|M knora-base:ProjectMember|V knora-base:KnownUser,knora-base:UnknownUser"^^xsd:string .
+
+<http://rdfh.ch/permissions/0666/draft-perm> rdf:type knora-base:DefaultObjectAccessPermission ;
+  knora-base:forProject <http://rdfh.ch/projects/0666> ;
+#  knora-base:forResourceClass test:DraftPerson ;
+  knora-base:forProperty test:hasName ;
+  # new objects of class Draft will have by default following perms:
+  # - not visbile by Unknown
+  # - visible by Known
+  # - modif by member
+  # - full perms for admin
+  knora-base:hasPermissions "CR knora-base:ProjectAdmin|M knora-base:ProjectMember|V knora-base:KnownUser"^^xsd:string .
+
+
+
