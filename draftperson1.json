@@ -1,0 +1,12 @@
+{
+    "restype_id": "http://www.knora.org/ontology/0666/test#DraftPerson",
+    "properties": {
+        "http://www.knora.org/ontology/0666/test#hasName": [{
+            "richtext_value": {
+                "utf8str": "draftperson1 name"
+            }
+        }]
+    },
+    "project_id": "http://rdfh.ch/projects/0666",
+    "label": "draftperson1"
+}

@@ -33,14 +33,14 @@
 
 <http://rdfh.ch/permissions/0666/draft-perm> rdf:type knora-base:DefaultObjectAccessPermission ;
   knora-base:forProject <http://rdfh.ch/projects/0666> ;
-#  knora-base:forResourceClass test:DraftPerson ;
   knora-base:forProperty test:hasName ;
-  # new objects of class Draft will have by default following perms:
-  # - not visbile by Unknown
-  # - visible by Known
-  # - modif by member
-  # - full perms for admin
+  # UnknownUser cannot see property hasName of any classes 
   knora-base:hasPermissions "CR knora-base:ProjectAdmin|M knora-base:ProjectMember|V knora-base:KnownUser"^^xsd:string .
 
+<http://rdfh.ch/permissions/0666/draft-perm> rdf:type knora-base:DefaultObjectAccessPermission ;
+  knora-base:forProject <http://rdfh.ch/projects/0666> ;
+  knora-base:forResourceClass test:DraftPerson ;
+  # UnknownUser cannot see any objects of class DraftPerson
+  knora-base:hasPermissions "CR knora-base:ProjectAdmin|M knora-base:ProjectMember|V knora-base:KnownUser"^^xsd:string .
 
 
