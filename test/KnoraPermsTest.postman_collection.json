@@ -1,0 +1,288 @@
+{
+	"info": {
+		"_postman_id": "8f43f1b0-b5f7-4d52-90d6-64639bc5c2c8",
+		"name": "KnoraPermsTest",
+		"description": "tests for https://github.com/LaDHUL/KnoraPermsTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "add Person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c499ebc7-db68-4c1e-ad59-8d612ec948e9",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"the request was successful\", function () {",
+							"    // check HTTP status 200",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// read the response as json",
+							"var jsonData;",
+							"",
+							"pm.test(\"the response is JSON\", function () {",
+							"    // throws exception on parsing error",
+							"    jsonData = pm.response.json()",
+							"});",
+							"",
+							"",
+							"pm.test(\"the Person was created\", function () {",
+							"    // sanity checks",
+							"    pm.expect(jsonData.res_id).to.exist;",
+							"});",
+							"",
+							"pm.test(\"save the Person IRI\", function () {",
+							"    // save IRI for later tests",
+							"    postman.setEnvironmentVariable(\"person_res_id\", jsonData.res_id);",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ac8b1721-7643-4ee4-bc57-ff63e5e66a01",
+						"type": "text/javascript",
+						"exec": [
+							"// define \"person_label\" and \"person_name\" to be used in body's request and subsequent tests",
+							"postman.setEnvironmentVariable(\"person_label\", \"person label\");",
+							"postman.setEnvironmentVariable(\"person_name\", \"person name\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{pwd}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user}}",
+							"type": "string"
+						},
+						{
+							"key": "saveHelperData",
+							"type": "any"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"restype_id\": \"http://www.knora.org/ontology/0666/test#Person\",\n    \"properties\": {\n        \"http://www.knora.org/ontology/0666/test#hasName\": [{\n            \"richtext_value\": {\n                \"utf8str\": \"{{person_name}}\"\n            }\n        }]\n    },\n    \"project_id\": \"http://rdfh.ch/projects/0666\",\n    \"label\": \"{{person_label}}\"\n}"
+				},
+				"url": {
+					"raw": "http://{{server}}:{{port}}/v1/resources",
+					"protocol": "http",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"v1",
+						"resources"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Person (and its name)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37311136-6498-49be-ab67-5772bb30c933",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"the request was successful\", function () {",
+							"    // check HTTP status 200",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// read the response as json",
+							"var jsonData;",
+							"",
+							"pm.test(\"the response is JSON\", function () {",
+							"    // throws exception on parsing error",
+							"    jsonData = pm.response.json()",
+							"});",
+							"",
+							"",
+							"pm.test(\"We can access the Person's name\", function () {",
+							"    pm.expect(jsonData.props).to.exist;",
+							"    pm.expect(jsonData.props[\"http://www.knora.org/ontology/0666/test#hasName\"]).to.exist;",
+							"    name_property = jsonData.props[\"http://www.knora.org/ontology/0666/test#hasName\"];",
+							"    value = name_property.values.shift();",
+							"    person_name = postman.getEnvironmentVariable(\"person_name\")",
+							"    pm.expect(value.utf8str).to.equal(person_name);",
+							"});",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "158cfdb5-4585-4bf2-a425-dadab88b34a9",
+						"type": "text/javascript",
+						"exec": [
+							"// encode the IRI so we can request it",
+							"encoded_res_id = encodeURIComponent(postman.getEnvironmentVariable(\"person_res_id\"));",
+							"postman.setEnvironmentVariable(\"encoded_person_res_id\", encoded_res_id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{pwd}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user}}",
+							"type": "string"
+						},
+						{
+							"key": "saveHelperData",
+							"type": "any"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"restype_id\": \"http://www.knora.org/ontology/0666/test#Person\",\n    \"properties\": {\n        \"http://www.knora.org/ontology/0666/test#hasName\": [{\n            \"richtext_value\": {\n                \"utf8str\": \"{{person_name}}\"\n            }\n        }]\n    },\n    \"project_id\": \"http://rdfh.ch/projects/0666\",\n    \"label\": \"{{person_label}}\"\n}"
+				},
+				"url": {
+					"raw": "http://{{server}}:{{port}}/v1/resources/{{encoded_person_res_id}}",
+					"protocol": "http",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"v1",
+						"resources",
+						"{{encoded_person_res_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Person (and but not its name)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37311136-6498-49be-ab67-5772bb30c933",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"the request was successful\", function () {",
+							"    // check HTTP status 200",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// read the response as json",
+							"var jsonData;",
+							"",
+							"pm.test(\"the response is JSON\", function () {",
+							"    // throws exception on parsing error",
+							"    jsonData = pm.response.json()",
+							"});",
+							"",
+							"",
+							"pm.test(\"We can access the Person's name\", function () {",
+							"    pm.expect(jsonData.props).to.exist;",
+							"    pm.expect(jsonData.props[\"http://www.knora.org/ontology/0666/test#hasName\"]).to.exist;",
+							"    name_property = jsonData.props[\"http://www.knora.org/ontology/0666/test#hasName\"];",
+							"    value = name_property.values.shift();",
+							"    person_name = postman.getEnvironmentVariable(\"person_name\")",
+							"    pm.expect(value.utf8str).to.equal(person_name);",
+							"});",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "158cfdb5-4585-4bf2-a425-dadab88b34a9",
+						"type": "text/javascript",
+						"exec": [
+							"// encode the IRI so we can request it",
+							"encoded_res_id = encodeURIComponent(postman.getEnvironmentVariable(\"person_res_id\"));",
+							"postman.setEnvironmentVariable(\"encoded_person_res_id\", encoded_res_id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"restype_id\": \"http://www.knora.org/ontology/0666/test#Person\",\n    \"properties\": {\n        \"http://www.knora.org/ontology/0666/test#hasName\": [{\n            \"richtext_value\": {\n                \"utf8str\": \"{{person_name}}\"\n            }\n        }]\n    },\n    \"project_id\": \"http://rdfh.ch/projects/0666\",\n    \"label\": \"{{person_label}}\"\n}"
+				},
+				"url": {
+					"raw": "http://{{server}}:{{port}}/v1/resources/{{encoded_person_res_id}}",
+					"protocol": "http",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"v1",
+						"resources",
+						"{{encoded_person_res_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
