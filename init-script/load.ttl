@@ -1,0 +1,6 @@
+open knora-test .
+load ../onto/test-admin.ttl into http://www.knora.org/data/admin .
+load ../onto/test-onto.ttl into http://www.knora.org/ontology/0666/test .
+load ../onto/test-permissions.ttl into http://www.knora.org/data/permissions .
+close .
+exit .
